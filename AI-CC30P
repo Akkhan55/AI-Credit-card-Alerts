@@ -1,0 +1,36 @@
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+
+# Load the credit card usage data
+data = pd.read_csv("credit_card_usage.csv")
+
+# Split the data into features (X) and target (y)
+X = data.drop("exceeded_limit", axis=1)
+y = data["exceeded_limit"]
+
+# Train a random forest model
+model = RandomForestRegressor()
+model.fit(X, y)
+
+# Get the credit card approved limit
+approved_limit = float(input("Enter your credit card approved limit: "))
+
+# Get the credit card current balance
+current_balance = float(input("Enter your credit card current balance: "))
+
+# Calculate the credit card utilization rate
+utilization_rate = current_balance / approved_limit
+
+# Make a prediction on whether the utilization rate will exceed 30%
+prediction = model.predict([[utilization_rate]])
+
+if prediction > 0.3:
+  # The utilization rate is likely to exceed 30%, so advise on how to better manage the credit card
+  print("It looks like your credit card utilization rate is likely to exceed 30% in the near future. Here are some tips on how to better manage your credit card:")
+  print("1. Pay off as much of your balance as possible each month to keep your utilization rate low.")
+  print("2. Try to pay off your balance in full each month to avoid paying interest.")
+  print("3. If you can't pay off your balance in full, try to at least pay more than the minimum payment due.")
+  print("4. Avoid using your credit card for unnecessary purchases.")
+else:
+  # The utilization rate is not likely to exceed 30%, so no advice is needed
+  print("It looks like your credit card utilization rate is not likely to exceed 30% in the near future. Keep up the good work!")
